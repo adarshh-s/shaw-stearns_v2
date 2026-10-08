@@ -10,10 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <script>
       try {
-        const saved = localStorage.getItem('ss-theme')
-        document.documentElement.dataset.theme = saved ? saved : 'light'
+        const saved = localStorage.getItem('ss-theme-v2')
+        document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark'
       } catch (e) {
-        document.documentElement.dataset.theme = 'light'
+        document.documentElement.dataset.theme = 'dark'
       }
     </script>
     <title>Shaw Stearns — Independent Client-Side Advisory</title>

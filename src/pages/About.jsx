@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import ClientModel from '../components/ClientModel.jsx'
 import PageHero from '../components/PageHero.jsx'
 import { Arrow, Card, Pill, useReveal } from '../components/ui.jsx'
 import { CAREER_OFFER, CONTACT, VALUES } from '../content.js'
@@ -31,18 +30,6 @@ export default function About() {
             <span className="mono">We work for</span>
             <strong>you. Only you.</strong>
           </Card>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <div className="feature-head" data-reveal>
-            <h2>Advice without an agenda</h2>
-            <p>One side of the table — yours. No commissions and no ties to the supply chain.</p>
-          </div>
-          <div className="about-model" data-reveal>
-            <ClientModel />
-          </div>
         </div>
       </section>
 

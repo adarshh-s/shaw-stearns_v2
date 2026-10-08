@@ -143,6 +143,34 @@ export const PROTECT = {
   ],
 }
 
+// The client-side core: four controlled stages over the project lifecycle.
+export const STAGES = [
+  {
+    t: 'Define',
+    sub: 'Initiation · Communication',
+    d: 'Brief, objectives and governance agreed with the owner before anything is committed.',
+    nodes: ['brief'],
+  },
+  {
+    t: 'Plan',
+    sub: 'Programme · Cost',
+    d: 'Master programme and cost plan set as the baseline every party is measured against.',
+    nodes: ['plan'],
+  },
+  {
+    t: 'Procure',
+    sub: 'Design · Procurement',
+    d: 'Design challenged for value and buildability; tenders run and evaluated on merit alone.',
+    nodes: ['design', 'tender'],
+  },
+  {
+    t: 'Deliver',
+    sub: 'Construction · Handover',
+    d: 'Contracts administered, change controlled and the final account settled with certainty.',
+    nodes: ['site', 'handover'],
+  },
+]
+
 // Short tags shown on each discipline card.
 export const DISCIPLINE_TAGS = {
   pm: ['Owner’s representation', 'Programme', 'Procurement', 'Handover'],

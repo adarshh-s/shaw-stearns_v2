@@ -64,8 +64,8 @@ export default function Nav() {
         <div className="nav-actions">
           <span className="nav-divider" aria-hidden="true" />
           <ThemeToggle />
-          <Link to="/contact" className="btn btn-solid btn-sm nav-cta">
-            Request a discussion
+          <Link to="/contact" className="btn-box nav-cta">
+            Request a discussion <span aria-hidden="true">↗</span>
           </Link>
           <button className="icon-btn nav-burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
             <span />

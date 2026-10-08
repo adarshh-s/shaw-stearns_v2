@@ -1,85 +1,62 @@
 import { Link } from 'react-router-dom'
-import Figures from '../components/Figures.jsx'
+import Core from '../components/Core.jsx'
+import Disciplines from '../components/Disciplines.jsx'
 import HeroStructure from '../components/HeroStructure.jsx'
-import ProtectStack from '../components/ProtectStack.jsx'
-import Statement from '../components/Statement.jsx'
-import { Arrow, SplitText, useReveal } from '../components/ui.jsx'
-import { PILLARS } from '../content.js'
+import Manifesto from '../components/Manifesto.jsx'
+import { SplitText, useReveal } from '../components/ui.jsx'
 
 export default function Home() {
   useReveal()
   return (
     <>
-      <section className="hero">
+      <section className="hero" data-bg>
         <div className="container hero-grid">
           <div className="hero-copy">
-            <h1 className="hero-title">
-              <SplitText text={'Peace of mind,'} />
-              <SplitText text={'delivered.'} delay={160} className="dim" />
+            <h1 className="display hero-title">
+              <SplitText text="Peace of mind," className="thin" />
+              <SplitText text="delivered." delay={180} className="bold" />
             </h1>
             <p className="hero-lede">
-              Independent project management, cost management and development advisory for owners and developers in
-              the UAE.
+              Independent project management, cost management and development advisory for owners and developers.
             </p>
-            <div className="hero-actions">
-              <Link to="/contact" className="btn btn-solid">
-                Request a discussion
-              </Link>
-              <Link to="/services" className="btn btn-ghost">
-                Services <Arrow />
-              </Link>
-            </div>
+            <Link to="/contact" className="btn-box hero-cta">
+              Request a discussion <span aria-hidden="true">↗</span>
+            </Link>
           </div>
           <HeroStructure />
         </div>
-        <div className="container hero-foot">
-          {PILLARS.map((p, i) => (
-            <span key={p.k}>
-              <i>0{i + 1}</i>
-              {p.k}
-            </span>
-          ))}
-        </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <Statement
-            lead="A pure client-side practice."
-            rest="Not contractors, designers or suppliers — independent advisors working only for owners and developers."
-          />
+          <Manifesto />
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <Figures />
-        </div>
-      </section>
+      <Core />
 
-      <ProtectStack />
+      <Disciplines />
 
       <CtaCard />
     </>
   )
 }
 
-// Closing call to action, centred like a final statement.
+// Closing call to action over the abstract background.
 export function CtaCard() {
   return (
-    <section className="cta">
+    <section className="cta" data-bg>
       <div className="container cta-inner" data-reveal>
-        <h2>
-          Protect what matters.
+        <h2 className="display">
+          Bring the brief.
           <br />
-          <span className="dim">Start with a conversation.</span>
+          <b>We’ll protect the rest.</b>
         </h2>
-        <div className="cta-actions">
-          <Link to="/contact" className="btn btn-solid">
-            Request a discussion
-          </Link>
-          <Link to="/services" className="btn btn-ghost">
-            Explore services <Arrow />
+        <div className="cta-side">
+          <p>Every enquiry is confidential by default. Tell us about your project.</p>
+          <Link to="/contact" className="cta-field">
+            <span>Request a discussion</span>
+            <i aria-hidden="true">↗</i>
           </Link>
         </div>
       </div>

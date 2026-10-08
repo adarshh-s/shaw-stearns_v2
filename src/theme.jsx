@@ -1,11 +1,11 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 
 const ThemeContext = createContext({ theme: 'dark', toggle: () => {} })
-const KEY = 'ss-theme'
+const KEY = 'ss-theme-v2'
 
 export function ThemeProvider({ children }) {
   // index.html sets data-theme before first paint; start from that to avoid a flash.
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'light')
+  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'dark')
 
   const toggle = useCallback(() => {
     setTheme((prev) => {

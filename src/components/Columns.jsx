@@ -214,9 +214,16 @@ export default function Columns({ className = '' }) {
       gl.uniform2f(u.uMouse, mouse.sx, mouse.sy)
       gl.uniform1f(u.uHover, mouse.hover)
       gl.uniform1f(u.uScroll, window.scrollY)
-      const fold = Math.min(1, window.scrollY / (window.innerHeight * 0.9))
-      // Inner pages keep the light quieter than the home hero.
-      gl.uniform1f(u.uFade, (1 - fold) * (mirror.current ? 0.45 : 1))
+      // Strongest while a [data-bg] section (page header, closing CTA) fills
+      // the screen; plain page colour in between. Inner pages stay quieter.
+      const vh = window.innerHeight
+      let vis = 0
+      document.querySelectorAll('[data-bg]').forEach((el) => {
+        const r = el.getBoundingClientRect()
+        const v = Math.min(1, Math.max(0, (vh - r.top) / vh)) * Math.min(1, Math.max(0, r.bottom / vh))
+        vis = Math.max(vis, v)
+      })
+      gl.uniform1f(u.uFade, vis * (mirror.current ? 0.45 : 1))
       gl.uniform1f(u.uMirror, mirror.current)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }

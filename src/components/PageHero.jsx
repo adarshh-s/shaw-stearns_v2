@@ -4,12 +4,12 @@ import { Pill, SplitText } from './ui.jsx'
 // word by word, and a lede.
 export default function PageHero({ label, title, accent, lede, children }) {
   return (
-    <section className="page-hero">
+    <section className="page-hero" data-bg>
       <div className="container page-hero-inner">
         <Pill>{label}</Pill>
-        <h1>
-          <SplitText text={title} />
-          <SplitText text={accent} delay={220} className="dim" />
+        <h1 className="display">
+          <SplitText text={title} className="thin" />
+          <SplitText text={accent} delay={220} className="bold" />
         </h1>
         {lede && <p className="lede">{lede}</p>}
         {children}
@@ -17,3 +17,4 @@ export default function PageHero({ label, title, accent, lede, children }) {
     </section>
   )
 }
+

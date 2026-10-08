@@ -8,26 +8,27 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-grid">
-        <div className="footer-brand">
-          <Logo />
-          <p>Independent client-side advisors to owners and developers across the UAE.</p>
-        </div>
         <div>
-          <h4>Services</h4>
+          <h4>01 / Services</h4>
           {DISCIPLINES.map((d) => (
             <Link key={d.id} to={`/services?d=${d.id}#disciplines`}>
-              {d.title}
+              {d.title} ↗
             </Link>
           ))}
         </div>
         <div>
-          <h4>Practice</h4>
-          <Link to="/about">About</Link>
-          <Link to="/about#careers">Careers</Link>
-          <Link to="/contact">Contact</Link>
+          <h4>02 / Practice</h4>
+          <Link to="/about">About ↗</Link>
+          <Link to="/about#careers">Careers ↗</Link>
+          <Link to="/contact">Contact ↗</Link>
+        </div>
+        <div className="footer-brand">
+          <h4>03 / Shaw Stearns</h4>
+          <Logo />
+          <p>Independent client-side advisors to owners and developers.</p>
         </div>
         <div>
-          <h4>Office</h4>
+          <h4>04 / Office</h4>
           <p>
             {CONTACT.office[0]}
             <br />
