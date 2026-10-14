@@ -1,25 +1,104 @@
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Logo, Arrow } from './ui.jsx'
 import { useTheme } from '../theme.jsx'
 
 const LINKS = [
+  { to: '/', label: 'Home' },
   { to: '/services', label: 'Services' },
-  { to: '/about', label: 'About' },
-  { to: '/about#careers', label: 'Careers' },
+  { to: '/careers', label: 'Careers' },
   { to: '/contact', label: 'Contact' },
 ]
 
-// Logo left; links, theme toggle and the primary action right. A soft
-// highlight slides between links on hover. The bar gains a hairline and blur
-// once the page scrolls.
+const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
+// Text-scramble "tag" (as on hubtown.co.in): the word types itself in from the
+// left, a couple of random glyphs running just ahead of the settled letters.
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// With `intro`, the word starts blank and decodes in on load.
+function useScramble(text, intro = false) {
+  const [out, setOut] = useState(() => (intro && !reducedMotion() ? '' : text))
+  const timer = useRef(0)
+
+  const run = useCallback(() => {
+    if (reducedMotion()) return setOut(text)
+    clearInterval(timer.current)
+    const chars = [...text]
+    let locked = 0
+    let frame = 0
+    timer.current = setInterval(() => {
+      frame += 1
+      if (frame % 2 === 0) locked += 1
+      const shown = chars.map((ch, i) => {
+        if (i < locked || ch === ' ') return ch
+        if (i < locked + 2) return GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+        return ''
+      })
+      setOut(shown.join(''))
+      if (locked >= chars.length) {
+        clearInterval(timer.current)
+        setOut(text)
+      }
+    }, 34)
+  }, [text])
+
+  useEffect(() => () => clearInterval(timer.current), [])
+  return [out, run]
+}
+
+// The real word sits invisibly underneath so the width never jumps.
+function Scramble({ text, out }) {
+  return (
+    <span className="scramble" aria-hidden="true">
+      <span className="scramble-ghost">{text}</span>
+      <span className="scramble-live">{out}</span>
+    </span>
+  )
+}
+
+function NavItem({ link, index, active, onHover }) {
+  const [out, run] = useScramble(link.label, true)
+
+  // Decode in once on load, one tag after another.
+  useEffect(() => {
+    const t = setTimeout(run, 350 + index * 110)
+    return () => clearTimeout(t)
+  }, [run, index])
+
+  const enter = (e) => {
+    onHover(e.currentTarget)
+    run()
+  }
+
+  return (
+    <NavLink to={link.to} end aria-label={link.label} onMouseEnter={enter} onFocus={enter} className={`nav-link ${active ? 'active' : ''}`}>
+      <Scramble text={link.label} out={out} />
+    </NavLink>
+  )
+}
+
+function NavCta() {
+  const label = 'Discuss your project'
+  const [out, run] = useScramble(label)
+  return (
+    <Link to="/contact" className="btn-box nav-cta" aria-label={label} onMouseEnter={run} onFocus={run}>
+      <Scramble text={label} out={out} /> <span aria-hidden="true">↗</span>
+    </Link>
+  )
+}
+
+// Logo left; tags, theme toggle and the primary action right. A soft blue
+// highlight slides between tags on hover while the word re-scrambles. Once the
+// page scrolls, the bar lifts into a floating glass panel with crosshair corners
+// and a hairline that tracks reading progress.
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { pathname, hash } = useLocation()
+  const { pathname } = useLocation()
   const [pill, setPill] = useState({ left: 0, width: 0, visible: false })
   const close = () => setOpen(false)
-  const isActive = (to) => (to.includes('#') ? pathname + hash === to : pathname === to && !(to === '/about' && hash === '#careers'))
+  const isActive = (to) => pathname === to
 
   const moveTo = useCallback((el) => {
     if (!el) return setPill((p) => ({ ...p, visible: false }))
@@ -27,8 +106,14 @@ export default function Nav() {
   }, [])
   const hide = useCallback(() => setPill((p) => ({ ...p, visible: false })), [])
 
+  const progress = useRef(null)
+
   useLayoutEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8)
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      if (progress.current) progress.current.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -36,54 +121,51 @@ export default function Nav() {
 
   return (
     <header className={`nav ${open ? 'is-open' : ''} ${scrolled ? 'is-scrolled' : ''}`}>
-      <div className="container nav-inner">
-        <Link to="/" onClick={close} className="nav-logo" aria-label="Shaw Stearns home">
-          <Logo />
-        </Link>
+      <div className="container nav-shell">
+        <div className="nav-panel">
+          <span className="nav-c tl" aria-hidden="true" />
+          <span className="nav-c tr" aria-hidden="true" />
+          <span className="nav-c bl" aria-hidden="true" />
+          <span className="nav-c br" aria-hidden="true" />
+          <div className="nav-inner">
+            <Link to="/" onClick={close} className="nav-logo" aria-label="Albemarle Grey home">
+              <Logo />
+            </Link>
 
-        <nav className="nav-links" aria-label="Primary" onMouseLeave={hide}>
-          <span
-            className="nav-hover"
-            aria-hidden="true"
-            style={{ transform: `translateX(${pill.left}px)`, width: pill.width, opacity: pill.visible ? 1 : 0 }}
-          />
-          {LINKS.map((l) => (
-            <NavLink
-              key={l.label}
-              to={l.to}
-              end
-              onMouseEnter={(e) => moveTo(e.currentTarget)}
-              onFocus={(e) => moveTo(e.currentTarget)}
-              className={() => `nav-link ${isActive(l.to) ? 'active' : ''}`}
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
+            <nav className="nav-links" aria-label="Primary" onMouseLeave={hide}>
+              <span className="nav-hover" aria-hidden="true" style={{ transform: `translateX(${pill.left}px)`, width: pill.width, opacity: pill.visible ? 1 : 0 }} />
+              {LINKS.map((l, i) => (
+                <NavItem key={l.label} link={l} index={i} active={isActive(l.to)} onHover={moveTo} />
+              ))}
+            </nav>
 
-        <div className="nav-actions">
-          <span className="nav-divider" aria-hidden="true" />
-          <ThemeToggle />
-          <Link to="/contact" className="btn-box nav-cta">
-            Request a discussion <span aria-hidden="true">↗</span>
-          </Link>
-          <button className="icon-btn nav-burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            <span />
-            <span />
-          </button>
+            <div className="nav-actions">
+              <span className="nav-divider" aria-hidden="true" />
+              <ThemeToggle />
+              <NavCta />
+              <button className="icon-btn nav-burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+                <span />
+                <span />
+              </button>
+            </div>
+          </div>
+
+          <div className="nav-drawer">
+            {LINKS.map((l) => (
+              <Link key={l.label} to={l.to} onClick={close} className={isActive(l.to) ? 'active' : ''}>
+                {l.label}
+                <Arrow />
+              </Link>
+            ))}
+            <Link to="/contact" onClick={close} className="btn btn-solid">
+              Discuss your project <Arrow />
+            </Link>
+          </div>
+
+          <span className="nav-progress" aria-hidden="true">
+            <i ref={progress} />
+          </span>
         </div>
-      </div>
-
-      <div className="nav-drawer">
-        {LINKS.map((l) => (
-          <Link key={l.label} to={l.to} onClick={close} className={isActive(l.to) ? 'active' : ''}>
-            {l.label}
-            <Arrow />
-          </Link>
-        ))}
-        <Link to="/contact" onClick={close} className="btn btn-solid">
-          Request a discussion <Arrow />
-        </Link>
       </div>
     </header>
   )

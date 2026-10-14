@@ -2,12 +2,18 @@ import { useState } from 'react'
 import { Arrow, Card, Pill, SplitText } from '../components/ui.jsx'
 import { CONTACT } from '../content.js'
 
+// Only name and email are required; phone and the rest never block sending.
 const FIELDS = [
   { name: 'name', label: 'Full name', required: true },
   { name: 'email', label: 'Email', type: 'email', required: true },
   { name: 'phone', label: 'Phone', type: 'tel' },
   { name: 'company', label: 'Company' },
   { name: 'project', label: 'Project type / location', wide: true },
+]
+
+const AREAS = [
+  { name: 'brief', label: 'Brief description', rows: 4 },
+  { name: 'rfp', label: 'Your request for proposal', optional: true, rows: 3 },
 ]
 
 // No backend yet: the form composes an email to the enquiries inbox.
@@ -20,10 +26,11 @@ function toMailto(data) {
     data.project && `Project: ${data.project}`,
     '',
     data.brief,
+    data.rfp && `\nRequest for proposal:\n${data.rfp}`,
   ]
     .filter((l) => l !== undefined && l !== '')
     .join('\n')
-  return `mailto:${CONTACT.email}?subject=${encodeURIComponent('Confidential discussion request')}&body=${encodeURIComponent(body)}`
+  return `mailto:${CONTACT.email}?subject=${encodeURIComponent('Project enquiry')}&body=${encodeURIComponent(body)}`
 }
 
 export default function Contact() {
@@ -37,15 +44,15 @@ export default function Contact() {
   }
 
   return (
-    <section className="contact">
+    <section className="contact" data-bg>
       <div className="container contact-grid">
         <div className="contact-info">
           <Pill>Contact</Pill>
           <h1>
-            <SplitText text="Start a" />
-            <SplitText text="conversation." delay={160} className="dim" />
+            <SplitText text="Discuss your" />
+            <SplitText text="project." delay={160} className="dim" />
           </h1>
-          <p className="lede">A private discussion to explore whether Shaw Stearns is the right partner for your project.</p>
+          <p className="lede">Contact us to discuss your objectives and the support required.</p>
           <dl className="details">
             <div>
               <dt className="mono muted">Office</dt>
@@ -61,18 +68,11 @@ export default function Contact() {
                 <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
               </dd>
             </div>
-            <div>
-              <dt className="mono muted">Discretion</dt>
-              <dd>Confidential by default</dd>
-            </div>
           </dl>
           <LocationMark />
         </div>
 
         <Card as="form" className="form" onSubmit={onSubmit}>
-          <div className="form-head">
-            <span className="mono muted">Request a confidential discussion</span>
-          </div>
           <div className="form-fields">
             {FIELDS.map((f) => (
               <label key={f.name} className={`field ${f.wide ? 'wide' : ''}`}>
@@ -83,15 +83,19 @@ export default function Contact() {
                 <input name={f.name} type={f.type || 'text'} required={f.required} autoComplete="on" />
               </label>
             ))}
-            <label className="field wide">
-              <span>Brief description</span>
-              <textarea name="brief" rows={4} />
-            </label>
+            {AREAS.map((f) => (
+              <label key={f.name} className="field wide">
+                <span>
+                  {f.label}
+                  {f.optional && <i className="field-opt"> (optional)</i>}
+                </span>
+                <textarea name={f.name} rows={f.rows} />
+              </label>
+            ))}
           </div>
           <button className="btn btn-solid btn-block" type="submit">
-            {sent ? 'Opening your email…' : 'Request a confidential discussion'} <Arrow />
+            {sent ? 'Opening your email…' : 'Send enquiry'} <Arrow />
           </button>
-          <p className="form-note muted">Every enquiry is treated with full discretion.</p>
         </Card>
       </div>
     </section>

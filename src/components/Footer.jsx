@@ -1,8 +1,23 @@
 import { Link } from 'react-router-dom'
-import { Logo } from './ui.jsx'
-import { CONTACT, DISCIPLINES } from '../content.js'
+import { Logo, Mark } from './ui.jsx'
+import { COMPANY, CONTACT, DISCIPLINES, PORTALS } from '../content.js'
 
 const YEAR = new Date().getFullYear()
+
+// A link that stays a quiet placeholder until its url is configured.
+function Placeholder({ url, children }) {
+  if (url)
+    return (
+      <a href={url} target="_blank" rel="noreferrer">
+        {children} ↗
+      </a>
+    )
+  return (
+    <span className="footer-soon" aria-disabled="true">
+      {children} <em>Soon</em>
+    </span>
+  )
+}
 
 export default function Footer() {
   return (
@@ -11,21 +26,22 @@ export default function Footer() {
         <div>
           <h4>01 / Services</h4>
           {DISCIPLINES.map((d) => (
-            <Link key={d.id} to={`/services?d=${d.id}#disciplines`}>
+            <Link key={d.id} to={d.to}>
               {d.title} ↗
             </Link>
           ))}
         </div>
         <div>
           <h4>02 / Practice</h4>
-          <Link to="/about">About ↗</Link>
-          <Link to="/about#careers">Careers ↗</Link>
+          <Link to="/careers">Careers ↗</Link>
           <Link to="/contact">Contact ↗</Link>
+          <Link to="/privacy">Privacy notice ↗</Link>
+          <Placeholder url={COMPANY.linkedin}>LinkedIn</Placeholder>
         </div>
         <div className="footer-brand">
-          <h4>03 / Shaw Stearns</h4>
+          <h4>03 / {COMPANY.name}</h4>
           <Logo />
-          <p>Independent client-side advisors to owners and developers.</p>
+          <p>{COMPANY.tagline}</p>
         </div>
         <div>
           <h4>04 / Office</h4>
@@ -37,9 +53,27 @@ export default function Footer() {
           <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
         </div>
       </div>
+
+      <div className="container footer-portals">
+        <h4>05 / Login</h4>
+        {PORTALS.map((p) => (
+          <Placeholder key={p.label} url={p.url}>
+            {p.label}
+          </Placeholder>
+        ))}
+      </div>
+
       <div className="container footer-base">
-        <span>© {YEAR} Shaw Stearns. All rights reserved.</span>
-        <span>Client-Side Advisory · Dubai</span>
+        <span className="footer-id">
+          <Mark />
+          {COMPANY.name} — {COMPANY.tagline}
+        </span>
+        <span>
+          © {YEAR} {COMPANY.name}. Dubai, UAE. All rights reserved.
+        </span>
+        <span className="footer-legal">{COMPANY.legal}</span>
+        {/* Reserved for the RICS regulatory statement and permitted branding. */}
+        <span className="footer-rics">{COMPANY.rics.active && COMPANY.rics.text}</span>
       </div>
     </footer>
   )

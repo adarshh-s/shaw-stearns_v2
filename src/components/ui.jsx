@@ -1,8 +1,15 @@
 import { useEffect } from 'react'
-import logoRaw from '../logo.svg?raw'
+import { gsap, ScrollTrigger, reducedMotion } from '../smooth.js'
 
+// The official Albemarle Grey artwork, applied as a CSS mask so each use can
+// take its colour from the brand palette (navy, white on dark, gold).
+export function Mark({ className = '' }) {
+  return <span className={`mark ${className}`} aria-hidden="true" />
+}
+
+// Horizontal lock-up: wordmark followed by the trademark.
 export function Logo({ className = '' }) {
-  return <span className={`logo ${className}`} role="img" aria-label="Shaw Stearns" dangerouslySetInnerHTML={{ __html: logoRaw }} />
+  return <span className={`logo ${className}`} role="img" aria-label="Albemarle Grey" />
 }
 
 // Small section label, e.g. "01 — Disciplines".
@@ -59,22 +66,43 @@ export function SplitText({ text, as: Tag = 'span', delay = 0, step = 55, classN
   )
 }
 
-// Adds .in to every [data-reveal] element on the page when it scrolls into view.
+// Scroll effects for the current page, run with GSAP ScrollTrigger:
+// - [data-reveal] elements gain .in as they enter, staggered when several
+//   arrive together (the CSS handles the rise and sharpen);
+// - [data-parallax="n"] elements drift against the scroll by n (0.1 – 0.4).
 export function useReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('[data-reveal]:not(.in)')
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('in')
-            io.unobserve(e.target)
-          }
-        }),
-      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
-    )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
+    const els = gsap.utils.toArray('[data-reveal]:not(.in)')
+    if (reducedMotion()) {
+      els.forEach((el) => el.classList.add('in'))
+      return
+    }
+    const ctx = gsap.context(() => {
+      ScrollTrigger.batch(els, {
+        start: 'top 90%',
+        once: true,
+        onEnter: (batch) => batch.forEach((el, i) => gsap.delayedCall(i * 0.12, () => el.classList.add('in'))),
+      })
+      gsap.utils.toArray('[data-parallax]').forEach((el) => {
+        const n = parseFloat(el.dataset.parallax) || 0.2
+        gsap.fromTo(
+          el,
+          { y: 0 },
+          {
+            y: () => -n * window.innerHeight * 0.5,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: el.closest('section') || el,
+              start: 'clamp(top bottom)',
+              end: 'clamp(bottom top)',
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          },
+        )
+      })
+    })
+    return () => ctx.revert()
   }, [])
 }
 

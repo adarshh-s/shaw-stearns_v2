@@ -13,7 +13,7 @@ const TEXT = [
   ['capital,', 2],
   ['programme', 2],
   ['and', 0],
-  ['reputation', 2],
+  ['quality', 2],
   ['of', 0],
   ['owners', 0],
   ['and', 0],
@@ -27,7 +27,7 @@ const TEXT = [
 const TABS = [
   { label: 'Capital', at: 6 },
   { label: 'Programme', at: 7 },
-  { label: 'Reputation', at: 9 },
+  { label: 'Quality', at: 9 },
 ]
 
 export default function Manifesto() {
@@ -59,7 +59,6 @@ export default function Manifesto() {
   return (
     <div className="manifesto" ref={ref}>
       <div className="mf-head">
-        <span className="kicker">Manifesto</span>
         <span className="mf-rule" />
         <div className="mf-tabs">
           {TABS.map((t) => (

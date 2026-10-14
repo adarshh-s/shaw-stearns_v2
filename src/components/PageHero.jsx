@@ -5,7 +5,7 @@ import { Pill, SplitText } from './ui.jsx'
 export default function PageHero({ label, title, accent, lede, children }) {
   return (
     <section className="page-hero" data-bg>
-      <div className="container page-hero-inner">
+      <div className="container page-hero-inner" data-parallax="0.3">
         <Pill>{label}</Pill>
         <h1 className="display">
           <SplitText text={title} className="thin" />

@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useTheme } from '../theme.jsx'
 
 // Site-wide background: wide fluted glass columns with a soft blue light band
 // flowing across them; each column catches the band at its own height. Columns
 // near the pointer rise toward it, over a faint drafting grid. The band is
-// strongest in the page header and fades back as you scroll.
+// strongest in the page header and fades to the plain page colour as you
+// scroll; the grid stays faintly visible throughout.
 
 const VERT = `#version 300 es
 in vec2 aPos;
@@ -21,7 +21,6 @@ uniform vec2 uMouse;
 uniform float uHover;
 uniform float uScroll;
 uniform float uFade;
-uniform float uMirror;
 out vec4 o;
 
 float hash(vec2 p) {
@@ -34,8 +33,6 @@ float edgeAt(float x, vec2 res, float t, float colW) {
     + 0.09 * sin(x * 0.0032 + t * 0.35)
     + 0.05 * sin(x * 0.0081 - t * 0.55 + 1.3)
     + 0.025 * sin(x * 0.017 + t * 0.9);
-  // Inner pages keep the band low so headings stay clear.
-  h += uMirror * 0.1;
   // Columns near the pointer rise toward it.
   float d = (x - uMouse.x) / (colW * 2.4);
   float near = exp(-d * d) * uHover;
@@ -127,7 +124,8 @@ void main() {
   vec2 mp = p - uMouse;
   float spot = exp(-dot(mp, mp) / (230.0 * 230.0)) * uHover;
   float dim = 1.0 - smoothstep(0.3, 0.9, I);
-  float gA = (line * (mix(0.045, 0.035, uDark) + 0.12 * spot) + cross * mix(0.18, 0.2, uDark)) * dim * uFade;
+  // Below the header the grid stays slightly pronounced over the plain page.
+  float gA = (line * (mix(0.05, 0.04, uDark) + 0.12 * spot) + cross * mix(0.2, 0.22, uDark)) * dim * max(uFade, 0.6);
   vec3 gridCol = mix(vec3(0.1, 0.2, 0.45), vec3(0.55, 0.68, 1.0), uDark);
   col = mix(col, gridCol, gA);
 
@@ -151,13 +149,6 @@ export default function Columns({ className = '' }) {
   const { theme } = useTheme()
   const darkTarget = useRef(theme === 'dark' ? 1 : 0)
   const redraw = useRef(null)
-  const { pathname } = useLocation()
-  const mirror = useRef(pathname === '/' ? 0 : 1)
-
-  useEffect(() => {
-    mirror.current = pathname === '/' ? 0 : 1
-    redraw.current?.()
-  }, [pathname])
 
   useEffect(() => {
     darkTarget.current = theme === 'dark' ? 1 : 0
@@ -187,7 +178,7 @@ export default function Columns({ className = '' }) {
     gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0)
 
     const u = Object.fromEntries(
-      ['uRes', 'uPx', 'uTime', 'uDark', 'uMouse', 'uHover', 'uScroll', 'uFade', 'uMirror'].map((n) => [n, gl.getUniformLocation(prog, n)]),
+      ['uRes', 'uPx', 'uTime', 'uDark', 'uMouse', 'uHover', 'uScroll', 'uFade'].map((n) => [n, gl.getUniformLocation(prog, n)]),
     )
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -215,7 +206,7 @@ export default function Columns({ className = '' }) {
       gl.uniform1f(u.uHover, mouse.hover)
       gl.uniform1f(u.uScroll, window.scrollY)
       // Strongest while a [data-bg] section (page header, closing CTA) fills
-      // the screen; plain page colour in between. Inner pages stay quieter.
+      // the screen; plain page colour in between. Every page behaves the same.
       const vh = window.innerHeight
       let vis = 0
       document.querySelectorAll('[data-bg]').forEach((el) => {
@@ -223,8 +214,7 @@ export default function Columns({ className = '' }) {
         const v = Math.min(1, Math.max(0, (vh - r.top) / vh)) * Math.min(1, Math.max(0, r.bottom / vh))
         vis = Math.max(vis, v)
       })
-      gl.uniform1f(u.uFade, vis * (mirror.current ? 0.45 : 1))
-      gl.uniform1f(u.uMirror, mirror.current)
+      gl.uniform1f(u.uFade, vis)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
     }
 
