@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { m } from 'motion/react'
+import { m, useIsPresent } from 'motion/react'
 import { Mark } from './ui.jsx'
 import { ScrollTrigger, reducedMotion, scrollToTarget } from '../smooth.js'
 
@@ -109,6 +109,10 @@ export default function PageTransition({ children }) {
   const [cols] = useState(columnCount)
   // Read once per mount; later route changes skip the intro.
   const [intro] = useState(() => firstLoad && !reducedMotion())
+  // Once this page starts leaving, its curtain shows the destination's tag,
+  // never the intro, even if the visitor navigates during the intro.
+  const present = useIsPresent()
+  const showIntro = intro && present
   useEffect(() => {
     firstLoad = false
   }, [])
@@ -153,7 +157,7 @@ export default function PageTransition({ children }) {
         >
           <span className="curtain-c tl" />
           <span className="curtain-c br" />
-          {intro ? (
+          {showIntro ? (
             <IntroName />
           ) : (
             <>
