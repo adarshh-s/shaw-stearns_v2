@@ -21,7 +21,7 @@ export default function Home() {
               Albemarle Grey advises owners and developers on development feasibility, project delivery and construction costs, from initial appraisal through to completion.
             </p>
           </div>
-          <div data-parallax="0.15">
+          <div className="hero-art" data-parallax="0.15">
             <HeroStructure />
           </div>
         </div>

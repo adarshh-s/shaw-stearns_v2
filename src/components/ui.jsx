@@ -69,7 +69,8 @@ export function SplitText({ text, as: Tag = 'span', delay = 0, step = 55, classN
 // Scroll effects for the current page, run with GSAP ScrollTrigger:
 // - [data-reveal] elements gain .in as they enter, staggered when several
 //   arrive together (the CSS handles the rise and sharpen);
-// - [data-parallax="n"] elements drift against the scroll by n (0.1 – 0.4).
+// - [data-parallax="n"] elements drift against the scroll by n (0.1 – 0.4),
+//   on wider screens only.
 export function useReveal() {
   useEffect(() => {
     const els = gsap.utils.toArray('[data-reveal]:not(.in)')
@@ -83,6 +84,8 @@ export function useReveal() {
         once: true,
         onEnter: (batch) => batch.forEach((el, i) => gsap.delayedCall(i * 0.12, () => el.classList.add('in'))),
       })
+      // Parallax only where layers sit side by side; stacked on phones they would collide.
+      if (window.innerWidth <= 860) return
       gsap.utils.toArray('[data-parallax]').forEach((el) => {
         const n = parseFloat(el.dataset.parallax) || 0.2
         gsap.fromTo(

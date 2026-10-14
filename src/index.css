@@ -321,6 +321,62 @@ html.lenis body {
   font-weight: 650;
 }
 
+.curtain-tag:has(.intro) {
+  max-width: none;
+}
+
+/* First-load intro: the company name */
+.intro {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: clamp(14px, 2vw, 28px);
+  row-gap: 18px;
+}
+
+.intro-mark .mark {
+  width: clamp(44px, 6.4vw, 96px);
+  height: clamp(44px, 6.4vw, 96px);
+}
+
+.intro-name {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+  margin: 0;
+  font-size: clamp(40px, 7.4vw, 112px);
+  font-weight: 250;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--heading);
+  white-space: nowrap;
+}
+
+.intro-word {
+  display: inline-flex;
+}
+
+.intro-word.bold {
+  font-weight: 650;
+}
+
+.intro-clip {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.intro-ch {
+  display: inline-block;
+  transform-origin: left bottom;
+}
+
+.intro-tag {
+  grid-column: 1 / -1;
+  min-height: 1.4em;
+  color: var(--accent);
+}
+
 .curtain-bar {
   position: relative;
   display: block;
@@ -1639,10 +1695,11 @@ button:hover > .arrow {
   display: grid;
   grid-auto-flow: column;
   gap: 4px;
+  margin: -10px 0;
 }
 
 .fw-progress button {
-  height: 12px;
+  height: 32px;
   position: relative;
 }
 
@@ -1651,7 +1708,7 @@ button:hover > .arrow {
   position: absolute;
   left: 0;
   right: 0;
-  top: 5px;
+  top: 15px;
   height: 2px;
   background: var(--line-strong);
   transition: background 0.35s;
@@ -1665,7 +1722,7 @@ button:hover > .arrow {
 .fw-progress-head {
   position: absolute;
   right: 0;
-  top: 3px;
+  top: 13px;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -2880,10 +2937,39 @@ button:hover > .arrow {
     grid-template-columns: 1fr;
   }
 
-  .hs {
+  .hero-art {
     order: -1;
+  }
+
+  .hs {
     width: 72%;
-    margin: 0 auto -16px;
+    margin: 0 auto 12px;
+  }
+
+  .page-hero {
+    min-height: 0;
+  }
+
+  .page-hero-inner {
+    padding-top: calc(var(--nav-h) + 72px);
+    padding-bottom: 24px;
+  }
+
+  .nav-logo {
+    padding: 9px 0;
+  }
+
+  .disc-tabs button {
+    padding: 8px 6px 8px 0;
+  }
+
+  .footer a {
+    padding: 8px 0;
+  }
+
+  .details a {
+    display: inline-block;
+    padding: 6px 0;
   }
 
   .mf-head {
@@ -2985,7 +3071,17 @@ button:hover > .arrow {
   }
 
   .fw-nav {
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
+  }
+
+  .fw-progress {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  .fw-nav .fw-step:last-child {
+    justify-self: end;
   }
 
   .fw-progress .kicker {
