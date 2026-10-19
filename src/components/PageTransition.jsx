@@ -23,7 +23,7 @@ const NAME = [
   ['Albemarle', 'thin'],
   ['Grey', 'bold'],
 ]
-const TAGLINE = 'Project & Cost Management · Development Advisory'
+const TAGLINE = 'Development Advisory · Project & Cost Management'
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 // Tagline that decodes left to right, random glyphs running ahead (as in the nav).

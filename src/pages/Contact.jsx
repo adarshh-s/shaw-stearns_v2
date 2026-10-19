@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Arrow, Card, Pill, SplitText } from '../components/ui.jsx'
 import { CONTACT } from '../content.js'
 
@@ -96,6 +97,9 @@ export default function Contact() {
           <button className="btn btn-solid btn-block" type="submit">
             {sent ? 'Opening your email…' : 'Send enquiry'} <Arrow />
           </button>
+          <p className="form-privacy">
+            We handle the information you send in line with our <Link to="/privacy">Privacy notice</Link>.
+          </p>
         </Card>
       </div>
     </section>

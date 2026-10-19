@@ -62,7 +62,7 @@ export default function Disciplines() {
     <section className="disc" ref={sectionRef}>
       <div className="disc-sticky">
         <div className="container disc-head">
-          <span className="kicker">01 / Disciplines</span>
+          <span className="kicker">01 / Expertise</span>
           <h2 className="display">
             Three disciplines.
             <br />

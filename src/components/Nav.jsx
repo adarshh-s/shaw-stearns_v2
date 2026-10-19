@@ -25,11 +25,11 @@ function useScramble(text, intro = false) {
     if (reducedMotion()) return setOut(text)
     clearInterval(timer.current)
     const chars = [...text]
+    // Fixed duration (~0.5s) so a long label like the CTA decodes as quickly as the short tags.
+    const step = Math.max(0.5, chars.length / 14)
     let locked = 0
-    let frame = 0
     timer.current = setInterval(() => {
-      frame += 1
-      if (frame % 2 === 0) locked += 1
+      locked += step
       const shown = chars.map((ch, i) => {
         if (i < locked || ch === ' ') return ch
         if (i < locked + 2) return GLYPHS[Math.floor(Math.random() * GLYPHS.length)]

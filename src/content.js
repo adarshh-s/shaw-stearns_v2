@@ -5,26 +5,18 @@ export const CONTACT = {
   office: ['Office S05-104, Trade Centre First', 'Dubai, United Arab Emirates'],
 }
 
-// Footer company details. Placeholders stay hidden or inactive until confirmed.
+// Footer company details.
 export const COMPANY = {
   name: 'Albemarle Grey',
-  tagline: 'Project & Cost Management · Development Advisory',
-  // TODO: replace with the registered legal entity name and licence / registration number.
-  legal: 'Albemarle Grey — legal entity and registration details to be confirmed.',
-  // TODO: add the LinkedIn company page URL; the link stays inactive while empty.
-  linkedin: '',
+  tagline: 'Development Advisory · Project & Cost Management',
+  entity: 'Albemarle Grey Project Development L.L.C',
+  location: 'Dubai, UAE',
+  licence: '1637049',
   // Reserved for the RICS regulatory statement. Set active once registration is confirmed.
   rics: { active: false, text: 'Regulated by RICS' },
 }
 
-// Login placeholders. Each link goes live once its url is set.
-export const PORTALS = [
-  { label: 'Client portal', url: '' },
-  { label: 'Staff portal', url: '' },
-  { label: 'Alumni network', url: '' },
-]
-
-// Home page service summaries, in the order DA → PM → CM/QS.
+// Home page service summaries, in the order DA → PM → CM.
 export const DISCIPLINES = [
   {
     id: 'da',
@@ -44,8 +36,8 @@ export const DISCIPLINES = [
   },
   {
     id: 'cm',
-    title: 'Cost Management & Quantity Surveying',
-    tab: 'Cost Management & QS',
+    title: 'Cost Management',
+    tab: 'Cost Management',
     tags: ['Cost planning', 'Procurement', 'Financial control', 'Final account'],
     short: 'Independent cost advice from initial estimates to final account, covering cost planning, measurement, tender evaluation and financial control.',
     to: '/services?d=cm#delivery',
@@ -117,14 +109,12 @@ export const DELIVERY = {
     {
       id: 'pm',
       label: 'Project Management',
-      kicker: 'Project Management',
       title: 'Project Management',
       d: 'We represent the client from brief to handover, coordinating project planning, design and procurement, and overseeing delivery. Programmes, risk registers and progress reports provide a clear basis for informed decisions.',
     },
     {
       id: 'cm',
-      label: 'Cost Management & QS',
-      kicker: 'Cost Management',
+      label: 'Cost Management',
       title: 'Cost Management & Quantity Surveying',
       d: 'We provide independent cost advice and commercial management, from initial estimates and cost planning through to tender evaluation, payment and variation assessments, and final accounts.',
     },
@@ -207,11 +197,45 @@ export const CAREERS = {
     { t: 'Excellence', d: 'We apply professional expertise, careful analysis and attention to detail.' },
     { t: 'Progress', d: 'We develop our people and adopt technology that improves how we analyse, collaborate and deliver.' },
   ],
-  join: 'We welcome enquiries from experienced professionals and graduates seeking to develop their careers in project management, quantity surveying and development advisory.',
+  join: 'We welcome enquiries from experienced professionals and graduates seeking to develop their careers in development advisory, project management and cost management.',
   grow: [
     'Our ambition is global, and we want our people to grow with us. We are building a practice where professional development, responsibility and exposure to different markets form part of a rewarding career.',
     'We welcome people with curiosity, sound judgement and the ambition to help shape the practice.',
   ],
   alumni:
     'People who build their careers with us remain part of the practice. Our alumni network will keep former colleagues connected to one another, to our people and to the opportunities ahead.',
+}
+
+// Privacy notice, linked from the footer and the enquiry form.
+export const PRIVACY = {
+  updated: '01 November 2026',
+  intro:
+    'Albemarle Grey Project Development LLC respects your privacy. This notice explains how we handle personal information provided through enquiries and our business relationships.',
+  sections: [
+    {
+      t: 'Information we collect',
+      d: [
+        'We collect the information you provide when you contact us, including your name, contact details, company, project information and any documents you send. Please only provide information relevant to your enquiry.',
+      ],
+    },
+    {
+      t: 'How we use it',
+      d: [
+        'We use this information to respond to enquiries, prepare requested proposals, provide agreed services and manage our relationship with you. We may also use or retain information to meet applicable legal obligations.',
+      ],
+    },
+    {
+      t: 'Sharing and retention',
+      d: [
+        'Your information may be handled by authorised personnel and service providers supporting our website, communications and business systems, where needed for these purposes. We may also disclose information where required by law.',
+        'We retain information according to the purpose for which it was collected, whether your enquiry becomes a client engagement, and any applicable legal or record-keeping requirements. Information that is no longer required is deleted or anonymised.',
+      ],
+    },
+    {
+      t: 'Your rights and contact',
+      d: [
+        'You can contact us to request access to, correction of or deletion of your personal information, or to exercise other rights available under applicable law. We may need to verify your identity, and some records may need to be retained for legal reasons.',
+      ],
+    },
+  ],
 }

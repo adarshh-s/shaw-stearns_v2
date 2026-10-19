@@ -29,7 +29,7 @@ export default function Services() {
   return (
     <>
       <PageHero
-        label="Services"
+        label="Albemarle Grey / Services"
         title="Clear advice."
         accent="Disciplined delivery."
         lede="Our services span development feasibility, project delivery and commercial management, with each appointment tailored to your objectives."
@@ -196,14 +196,20 @@ function Delivery() {
       <div className="container">
         <div className="svc-head" data-reveal>
           <span className="kicker">02 / Project Delivery</span>
+          <h2 className="display svc-display">
+            <span className="thin">From inception to</span>
+            <br />
+            <b>project completion.</b>
+          </h2>
+          <p className="lede">
+            We represent owners and developers through project management and independent commercial advice, coordinating delivery and managing costs from initial briefing
+            through design, procurement, construction and handover.
+          </p>
         </div>
 
         <div className="svc-intro" data-reveal>
-          {DELIVERY.services.map((d, i) => (
+          {DELIVERY.services.map((d) => (
             <div key={d.id}>
-              <span className="kicker">
-                {pad(i + 1)} / {d.kicker}
-              </span>
               <h3>{d.title}</h3>
               <p className="muted">{d.d}</p>
             </div>
@@ -290,7 +296,9 @@ function Delivery() {
                   <h3>{st.t}</h3>
                 </div>
                 <div className="fw-detail-body">
-                  <p className="fw-statement">{st[service.id]}</p>
+                  <div className="fw-outcome">
+                    <p>{st[service.id]}</p>
+                  </div>
                 </div>
               </m.div>
             </AnimatePresence>
