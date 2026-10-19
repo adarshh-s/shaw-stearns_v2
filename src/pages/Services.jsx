@@ -222,11 +222,11 @@ function Delivery() {
         </div>
 
         <div className="svc-head" data-reveal>
-          <span className="kicker">03 / Our approach</span>
+          <span className="kicker">03 / Delivery Framework</span>
           <h2 className="display svc-display">
-            <span className="thin">From brief to</span>
+            <span className="thin">A structured</span>
             <br />
-            <b>handover.</b>
+            <b>approach.</b>
           </h2>
           <p className="lede">Explore how our project management and commercial expertise support each stage of the construction lifecycle.</p>
         </div>

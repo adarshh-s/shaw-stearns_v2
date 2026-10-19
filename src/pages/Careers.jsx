@@ -181,7 +181,6 @@ export default function Careers() {
               <b>the practice.</b>
             </h2>
             <p className="muted">{CAREERS.alumni}</p>
-            <span className="tag-soon">Alumni network · Coming soon</span>
           </div>
           <Network />
         </div>
