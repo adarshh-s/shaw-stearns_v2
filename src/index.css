@@ -2673,7 +2673,8 @@ button:hover > .arrow {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 56px;
+  justify-content: center;
+  gap: 8px 72px;
   margin-top: 34px;
   padding-top: 14px;
 }
@@ -3030,7 +3031,7 @@ button:hover > .arrow {
   }
 
   .disc-tabs button {
-    padding: 8px 6px 8px 0;
+    padding: 8px 0;
   }
 
   .footer a {
