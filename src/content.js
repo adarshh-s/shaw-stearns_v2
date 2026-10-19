@@ -174,7 +174,7 @@ export const DELIVERY = {
 // Careers page.
 export const CAREERS = {
   intro:
-    'Albemarle Grey is an independent consultancy providing project management, cost management and development advisory for owners and developers. We combine professional expertise with commercial judgement to support informed decisions from initial feasibility through to completion.',
+    'Albemarle Grey is an independent consultancy providing development advisory, project management and cost management for owners and developers. We combine professional expertise with commercial judgement to support informed decisions from initial feasibility through to completion.',
   mission: 'To advance our clients’ development ambitions through independent advice, commercial insight and disciplined project delivery.',
   vision: 'To build a globally respected practice, recognised for the quality of our advice, the capability of our people and the standards of our delivery.',
   defines: [
