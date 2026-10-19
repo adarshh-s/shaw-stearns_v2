@@ -1255,6 +1255,8 @@ button:hover > .arrow {
 
 .fw-explore .fw-outcome p {
   margin-top: 0;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .svc-intro p {
